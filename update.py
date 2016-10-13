@@ -5,8 +5,29 @@ import time
 def webUpdate(url):
     cLocation = __file__
     tFile = open("temp.py", "wb")
-    http = urllib2.urlopen(url)
-    uCode = http.read()
+    try:
+        http = urllib2.urlopen(url)
+    except Exception as e:
+        if os.path.exists('update.log'):
+            logErr = open('update.log', 'ab')
+            logErr.write('/n')
+            logErr.write(url)
+            logErr.write('/n')
+            logErr.write(datetime.datetime.now)
+            logErr.write(e)
+            logErr.write('/n')
+            logErr.close()
+        else:
+            logErr = open('update.log', 'wb')
+            logErr.write('/n')
+            logErr.write(url)
+            logErr.write('/n')
+            logErr.write(datetime.datetime.now)
+            logErr.write(e)
+            logErr.write('/n')
+            logErr.close()
+        return    
+    #uCode = http.read()
     aPos = "'''"
     tempCode = """import os
 import time
@@ -25,6 +46,13 @@ except Exception as e:
     print e
     if os.path.exists('update.log'):
         logErr = open('update.log', 'ab')
+        logErr.write('/n')
+        logErr.write(datetime.datetime.now)
+        logErr.write(e)
+        logErr.write('/n')
+        logErr.close()
+    else:
+        logErr = open('update.log', 'wb')
         logErr.write('/n')
         logErr.write(datetime.datetime.now)
         logErr.write(e)
